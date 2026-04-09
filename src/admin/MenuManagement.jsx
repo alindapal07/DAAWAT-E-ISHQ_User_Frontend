@@ -1,11 +1,12 @@
 import React, { useState, useContext } from 'react';
-import { Clock, Edit, Eye, EyeOff, Plus, Save, Search, Tag, Trash2, X } from 'lucide-react';
+import { Edit, Eye, EyeOff, Plus, Search, Trash2 } from 'lucide-react';
 import { MenuContext } from '../context/MenuContext'; // <--- USE THE CONTEXT
 
 const MenuManagement = () => {
   // Get menu items and functions from the shared context
   const { menuItems, addMenuItem, updateMenuItem, deleteMenuItem } = useContext(MenuContext);
 
+  // eslint-disable-next-line no-unused-vars
   const [showModal, setShowModal] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
@@ -14,6 +15,7 @@ const MenuManagement = () => {
 
   // Derive categories dynamically from menu items
   const categories = [...new Set(menuItems.map(item => item.type).filter(Boolean))];
+  // eslint-disable-next-line no-unused-vars
   const allergensList = ['Gluten', 'Dairy', 'Nuts', 'Soy', 'Eggs', 'Shellfish'];
 
   const [formData, setFormData] = useState({});
@@ -34,11 +36,13 @@ const MenuManagement = () => {
     setShowModal(true);
   };
   
+  // eslint-disable-next-line no-unused-vars
   const handleFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
+  // eslint-disable-next-line no-unused-vars
   const handleAllergenChange = (allergen) => {
     const currentAllergens = formData.allergens || [];
     const newAllergens = currentAllergens.includes(allergen)
@@ -47,6 +51,7 @@ const MenuManagement = () => {
     setFormData(prev => ({ ...prev, allergens: newAllergens }));
   };
   
+  // eslint-disable-next-line no-unused-vars
   const handleSubmit = () => {
     if (!formData.name || !formData.price) return;
     

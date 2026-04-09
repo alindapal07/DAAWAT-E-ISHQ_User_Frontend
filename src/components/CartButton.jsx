@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { ShoppingBag } from "lucide-react";
 import {
-  useEffect,
   useRef,
   forwardRef,
   useImperativeHandle,

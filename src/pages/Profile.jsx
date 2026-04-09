@@ -117,7 +117,7 @@ const Profile = () => {
       // Log the token for debugging
       console.log('Using token:', token);
       
-  const res = await api.put('/auth/update-profile', {
+  await api.put('/auth/update-profile', {
         name: editData.name.trim(),
         email: editData.email.trim(),
         phone: editData.phone ? editData.phone.trim() : '',

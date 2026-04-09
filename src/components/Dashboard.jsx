@@ -106,46 +106,7 @@ const Dashboard = () => {
     }
   }, [user]);
 
-  // State for real data
-  const [dashboardData, setDashboardData] = useState({
-    stats: {
-      totalOrders: orders.length,
-      activeReservations: reservations.filter(r => new Date(r.date) > new Date()).length,
-      wishlistItems: user?.wishlist?.length || 0,
-      loyaltyPoints: user?.loyaltyPoints || 0,
-      totalSpent: orders.reduce((total, order) => total + order.total, 0),
-      reviewsGiven: user?.reviews?.length || 0
-    },
-    recentOrders: orders.slice(0, 4).map(order => ({
-      id: order._id,
-      date: order.createdAt,
-      items: order.items.map(item => item.name),
-      total: order.total,
-      status: order.status,
-      rating: order.rating,
-      deliveryTime: order.deliveryTime
-    })),
-    upcomingReservations: reservations
-      .filter(r => new Date(r.date) > new Date())
-      .slice(0, 3)
-      .map(res => ({
-        id: res._id,
-        date: res.date,
-        time: res.time,
-        guests: res.guests,
-        table: res.table || `Table ${res.tableNumber || 'TBD'}`,
-        status: res.status
-      })),
-    favoriteItems: (user?.favorites || []).slice(0, 3).map(fav => ({
-      id: fav._id,
-      name: fav.name,
-      image: fav.image,
-      price: fav.price,
-      orderCount: orders.filter(order => 
-        order.items.some(item => item.name === fav.name)
-      ).length
-    }))
-  });
+
 
   const getStatusIcon = (status) => {
     switch (status) {
