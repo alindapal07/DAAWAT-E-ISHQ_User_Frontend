@@ -9,9 +9,7 @@ const Wishlist = () => {
   const {
     wishlistItems,
     removeFromWishlist,
-    moveAllToCart,
-    getWishlistTotal,
-    isWishlistEmpty
+    moveAllToCart
   } = useContext(WishlistContext);
 
   const handleAddToCart = (item) => {

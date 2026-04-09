@@ -173,10 +173,6 @@ const Dashboard = () => {
     }
   };
 
-  const filteredOrders = dashboardData.recentOrders.filter(order => {
-    if (activeFilter === 'all') return true;
-    return order.status === activeFilter;
-  });
 
   const quickActions = [
     { icon: Utensils, label: 'Browse Menu', link: '/menu', color: 'orange' },

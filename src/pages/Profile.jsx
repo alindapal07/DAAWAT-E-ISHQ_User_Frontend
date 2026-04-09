@@ -125,7 +125,7 @@ const Profile = () => {
         dateOfBirth: editData.dateOfBirth || null
       });
 
-      const data = res.data;
+
       setProfileData(prevData => ({
         ...prevData,
         ...editData

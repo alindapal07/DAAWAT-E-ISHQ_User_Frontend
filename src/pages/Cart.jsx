@@ -3,7 +3,7 @@ import { ArrowLeft, Clock, Gift, Minus, Package, Plus, ShoppingBag, Sparkles, Tr
 import { useContext, useState } from 'react';
 import { CartContext } from '../context/CartContext.jsx'; // Adjust path as needed
 import './Cart.css';
-import { MenuContext } from '../context/MenuContext.jsx';
+
 
 const Cart = () => {
   const { 
@@ -16,7 +16,7 @@ const Cart = () => {
     getFinalTotal
   } = useContext(CartContext);
  const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const [hoveredItem, setHoveredItem] = useState(null);
+
   const [showClearConfirm, setShowClearConfirm] = useState(false);
   const [promoCode, setPromoCode] = useState('');
 
@@ -102,8 +102,6 @@ const Cart = () => {
                 {cartItems.map((item) => (
                   <div
                     key={item.id}
-                    onMouseEnter={() => setHoveredItem(item.id)}
-                    onMouseLeave={() => setHoveredItem(null)}
                     className="cart-item"
                   >
                     <div className="cart-item-content">

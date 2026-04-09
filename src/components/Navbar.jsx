@@ -1,4 +1,4 @@
-import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import { Menu, Search, User, X } from "lucide-react";
 import { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AdminAuthContext } from "../admin/AdminAuthContext";
