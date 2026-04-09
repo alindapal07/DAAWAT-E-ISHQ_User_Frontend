@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ReviewCard from '../components/ReviewCard';
 import { Star, Send } from 'lucide-react';
+import './Reviews.css';
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([
@@ -50,89 +51,76 @@ const Reviews = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-6xl mx-auto px-4">
+    <div className="reviews-page">
+      <div className="reviews-page__inner">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">Customer Reviews</h1>
-          <p className="text-gray-600 text-lg">Share your experience with us</p>
+        <div className="reviews-page__header">
+          <h1 className="reviews-page__title">Customer Reviews</h1>
+          <p className="reviews-page__subtitle">Share your experience with us</p>
         </div>
 
         {/* New Review Form */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-6">Leave a Review</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name *
-                </label>
+        <section className="review-form-card">
+          <h2 className="review-form-card__title">Leave a Review</h2>
+          <form onSubmit={handleSubmit} className="review-form">
+            <div className="review-form-grid">
+              <div className="review-form-group">
+                <label className="review-form-label">Your Name *</label>
                 <input
                   type="text"
                   placeholder="Enter your name"
                   value={newReview.name}
                   onChange={e => setNewReview({ ...newReview, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="review-form-input"
                   required
                 />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Rating *
-                </label>
-                <div className="flex items-center gap-2">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setNewReview({ ...newReview, rating: star })}
-                      className="focus:outline-none"
-                    >
-                      <Star
-                        size={24}
-                        className={`${
-                          star <= newReview.rating 
-                            ? 'text-yellow-500 fill-yellow-400' 
-                            : 'text-gray-300'
-                        } hover:text-yellow-400 transition-colors`}
-                      />
-                    </button>
-                  ))}
-                  <span className="ml-2 text-sm text-gray-600">
+              <div className="review-form-group">
+                <label className="review-form-label">Rating *</label>
+                <div className="rating-group">
+                  <div className="rating-stars">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setNewReview({ ...newReview, rating: star })}
+                        className={`rating-star-btn ${star <= newReview.rating ? 'rating-star-btn--active' : ''}`}
+                        aria-label={`${star} star${star !== 1 ? 's' : ''}`}
+                      >
+                        <Star size={18} />
+                      </button>
+                    ))}
+                  </div>
+                  <span className="rating-value">
                     {newReview.rating} star{newReview.rating !== 1 ? 's' : ''}
                   </span>
                 </div>
               </div>
             </div>
-            
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Your Review *
-              </label>
+
+            <div className="review-form-group">
+              <label className="review-form-label">Your Review *</label>
               <textarea
                 placeholder="Share your experience with our food and service..."
                 value={newReview.review}
                 onChange={e => setNewReview({ ...newReview, review: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent resize-none"
+                className="review-form-textarea"
                 required
               />
             </div>
-            
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="flex items-center gap-2 bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition-colors font-medium"
-              >
+
+            <div className="review-submit-wrapper">
+              <button type="submit" className="review-submit-btn">
                 <Send size={18} />
                 Submit Review
               </button>
             </div>
           </form>
-        </div>
+        </section>
 
         {/* Reviews List */}
-        <div className="space-y-6">
+        <div className="reviews-list">
           {reviews.map((review, index) => (
             <ReviewCard key={index} {...review} />
           ))}

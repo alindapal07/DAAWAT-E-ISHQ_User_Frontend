@@ -1,10 +1,15 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect, useRef } from 'react';
 
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+
+  // ── NEW: cartRef lives here so both Navbar (attaches it) and
+  // MenuItemCard (calls triggerFly) can reach it without prop drilling.
+  // Nothing else in this file changes.
+  const cartRef = useRef(null);
 
   // Load cart from localStorage on component mount
   useEffect(() => {
@@ -28,7 +33,6 @@ export const CartProvider = ({ children }) => {
   const addToCart = (item, quantity = 1) => {
     setCartItems(prevItems => {
       const existingItem = prevItems.find(cartItem => cartItem.id === item.id);
-      
       if (existingItem) {
         return prevItems.map(cartItem =>
           cartItem.id === item.id
@@ -52,7 +56,6 @@ export const CartProvider = ({ children }) => {
       removeFromCart(itemId);
       return;
     }
-
     setCartItems(prevItems =>
       prevItems.map(item =>
         item.id === itemId ? { ...item, quantity } : item
@@ -103,7 +106,6 @@ export const CartProvider = ({ children }) => {
 
   // Apply discount (for future use)
   const applyDiscount = (discountCode) => {
-    // This can be implemented later for discount functionality
     console.log('Discount code applied:', discountCode);
   };
 
@@ -129,7 +131,6 @@ export const CartProvider = ({ children }) => {
 
   // Move item to wishlist (for future implementation)
   const moveToWishlist = (itemId) => {
-    // This can be implemented when wishlist functionality is added
     console.log('Moving item to wishlist:', itemId);
   };
 
@@ -156,7 +157,9 @@ export const CartProvider = ({ children }) => {
     // State
     cartItems,
     isCartOpen,
-    
+    // NEW: expose cartRef so Navbar and MenuItemCard can use it
+    cartRef,
+
     // Actions
     addToCart,
     removeFromCart,
@@ -169,7 +172,7 @@ export const CartProvider = ({ children }) => {
     moveToWishlist,
     saveForLater,
     loadSavedCart,
-    
+
     // Computed values
     getTotalItems,
     getTotalPrice,
@@ -179,7 +182,7 @@ export const CartProvider = ({ children }) => {
     getItemQuantity,
     isCartEmpty,
     getUniqueItemsCount,
-    
+
     // Setters
     setIsCartOpen
   };

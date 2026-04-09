@@ -1,17 +1,13 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000/api',
-  // Avoid sending cookies/credentials by default to prevent CORS issues
-  // when backend returns Access-Control-Allow-Origin as '*'.
-  // Set to `true` only if you need cookies and the backend is configured
-  // to return a specific origin and Access-Control-Allow-Credentials: true.
-  withCredentials: false,
+  baseURL: process.env.REACT_APP_API_URL,
+  withCredentials: true
 });
 
 // Attach Authorization header if token exists in localStorage
 api.interceptors.request.use(
-  (config) => {
+  (config) => { 
     try {
       // Attach user token by default
       const token = localStorage.getItem('userToken');

@@ -1,11 +1,11 @@
-import { Clock, Star, Users } from 'lucide-react';
+ import { Clock, Star, Users } from 'lucide-react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { CartContext } from '../context/CartContext';
-import kachiiImg from '../Assets/kachii-biriyani.jpg';
 import butterChickenImg from '../Assets/butterchicken.jpg';
-import paneerImg from '../Assets/paneer-butter-masala.png';
 import ElishImg from '../Assets/Elish.jpg';
+import kachiiImg from '../Assets/kachii-biriyani.jpg';
+import paneerImg from '../Assets/paneer-butter-masala.png';
+import { CartContext } from '../context/CartContext';
 
 
 const FeaturedMenu = () => {
@@ -27,7 +27,7 @@ const featuredItems = [
     isSpecial: true
   },
     {
-    id: 3,
+    id: 2,
     name: 'Ilish Pulao (Full)',
     description: 'Ilish Pulao is a fragrant Bengali delicacy where tender hilsa fish is gently cooked with aromatic gobindobhog rice, whole spices, and subtle mustard notes, creating a rich, delicate balance of flavor and tradition.',
     price: 490,
@@ -38,7 +38,7 @@ const featuredItems = [
     isSpecial: false
   },
   {
-    id: 2,
+    id: 3,
     name: 'Butter Chicken',
     description: 'Creamy tomato-based curry with succulent chicken pieces',
     price: 399,
@@ -49,7 +49,7 @@ const featuredItems = [
     isSpecial: false
   },
   {
-    id: 3,
+    id: 4,
     name: 'Paneer butter masala',
     description: 'Rich and creamy cottage cheese curry with aromatic spices',
     price: 349,

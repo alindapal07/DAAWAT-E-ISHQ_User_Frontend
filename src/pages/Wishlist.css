@@ -253,12 +253,12 @@
   justify-content: center;
 }
 
-.veg-indicator::after {
+/* .veg-indicator::after {
   content: '';
   width: 6px;
   height: 6px;
   border-radius: 50%;
-}
+} */
 
 .veg-indicator.veg {
   border-color: #16a34a;

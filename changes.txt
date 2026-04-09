@@ -1,0 +1,43 @@
+/components/Navbar.jsx
+//use to count thenumber of items coming from cartContext and reflect directly to UI
+const itemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
+
+
+
+
+
+//Create a new component 'CartButton.jsx' and mounted it on 'Navbar.jsx' 
+where implemented  
+    1- Dynamic Cart Count Badge    
+                Displays item count only when itemCount > 0
+                Handles large values using:
+                // itemCount > 99 ? "99+" : itemCount
+
+
+    2- Smooth Count Animation
+           Uses key={itemCount} to trigger re-render on change
+           Applies animate-roll-single for slide-up + fade animation
+
+            Result: Number updates feel smooth instead of abrupt
+
+    3- 🎬 Smooth Count Animation
+                Uses key={itemCount} to trigger re-render on change
+                Applies animate-roll-single for slide-up + fade animation
+
+                Result: Number updates feel smooth instead of abrupt   
+
+
+     4- Haptic Feedback (Mobile)
+                navigator.vibrate(40);
+               Triggers vibration on supported devices
+
+                Result: Physical feedback enhances user experience           
+
+   
+
+
+
+// pages/Cart.jsx
+    // connect userContext data to the cart page 'Item(cartedItems)' so that numbers will update dynamically ,
+    connect cart page 'bagIcon number' to usercontext so that change happen dynamically to UI.
+

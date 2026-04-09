@@ -54,52 +54,316 @@
   max-width: 400px;
 }
 
+/*  Icon */
 .search-box .search-icon {
   position: absolute;
-  left: 1rem;
+  left: 1.0rem; /* more edge spacing */
   top: 50%;
   transform: translateY(-50%);
   color: #9ca3af;
-}
-
-.search-box input {
-  width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.75rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 25px;
-  font-size: 1rem;
-  outline: none;
+  pointer-events: none;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
 }
 
+/*  Input Field */
+.search-box input {
+  width: 100%;
+  margin-left: auto;
+
+  /*  Increased gap between icon & text */
+  padding: 0.9rem 5rem 0.9rem 3.8rem;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+
+  font-size: 1rem;
+  outline: none;
+
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  transition: all 0.3s ease;
+}
+
+/*  Hover Effect */
+.search-box input:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+/*  Focus Glow */
+.search-box input:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2);
+}
+
+/*  Icon reacts on focus */
+.search-box input:focus + .search-icon,
+.search-box input:focus ~ .search-icon {
+  color: #f97316;
+}
+
+/*  Placeholder Styling */
+.search-box input::placeholder {
+  color: #9ca3af;
+  letter-spacing: 0.4px;
+  transition: 0.2s;
+}
+
+/*  Slight fade on focus */
+.search-box input:focus::placeholder {
+  opacity: 0.6;
+}
+
+/*  Mobile Optimization */
+@media (max-width: 480px) {
+  .search-box input {
+    padding: 0.8rem 1rem 0.8rem 3.2rem;
+    font-size: 0.95rem;
+  }
+
+  .search-box .search-icon {
+    left: 1rem;
+    font-size: 1rem;
+  }
+}
 .search-box input:focus {
   border-color: #fbbf24;
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
 }
 
-.sort-select select {
-  padding: 0.8rem 2.5rem 0.8rem 1rem;
-  border: 1px solid #e5e7eb;
+/* =========================================================
+   CUSTOM SORT DROPDOWN — MENU PAGE
+   Uses the amber/gold brand palette that matches the menu card
+   accent colour (#fbbf24). Shares the same animated open/close
+   pattern as the Search page dropdown.
+========================================================= */
+
+/* Wrapper — positions the floating list absolutely below the trigger */
+.menu-sort-dropdown {
+  position: relative;
+  display: inline-block;
+  min-width: 210px;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Trigger button — permanently visible, shows selection + chevron */
+.menu-sort-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  width: 100%;
+  padding: 0.78rem 1.15rem;
+  background: white;
+  border: 1.5px solid #e5e7eb;
   border-radius: 25px;
-  font-size: 1rem;
-  -webkit-appearance: none;
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%239ca3af' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.75rem center;
-  background-size: 1em;
+  color: #374151;
+  font-size: 0.92rem;
+  font-weight: 500;
   cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+.menu-sort-trigger:hover {
+  border-color: #fbbf24;
+  background: #fffbeb;
+}
+
+/* Open state — pressed look matching the amber accent */
+.menu-sort-trigger--open {
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+  background: #fffbeb;
+}
+
+/* Chevron icon — rotates 180deg smoothly when the list opens */
+.menu-sort-chevron {
+  color: #9ca3af;
+  flex-shrink: 0;
+  transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+}
+
+.menu-sort-trigger--open .menu-sort-chevron {
+  transform: rotate(180deg);
+  color: #f59e0b;
+}
+
+/* Floating options panel — hidden by default, animated in when open */
+.menu-sort-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1.5px solid rgba(251, 191, 36, 0.3);
+  border-radius: 16px;
+  padding: 0.4rem 0;
+  list-style: none;
+  margin: 0;
+  z-index: 500;
+  box-shadow:
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 4px 12px rgba(251, 191, 36, 0.08);
+
+  /* Default hidden state — scale down + fade out */
+  opacity: 0;
+  transform: translateY(-8px) scale(0.97);
+  pointer-events: none;
+  transition:
+    opacity 0.22s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: top center;
+}
+
+/* Open state — scale up and fade in */
+.menu-sort-list--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Individual option row */
+.menu-sort-option {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  border-radius: 10px;
+  margin: 0 0.3rem;
+  transition: background 0.15s ease, color 0.15s ease, padding-left 0.18s ease;
+}
+
+.menu-sort-option:hover {
+  background: rgba(251, 191, 36, 0.1);
+  color: #92400e;
+  padding-left: 1.45rem;
+}
+
+/* Active option highlight — warm amber gradient */
+.menu-sort-option--active {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.15) 0%, rgba(245, 158, 11, 0.08) 100%);
+  color: #92400e;
+  font-weight: 600;
+}
+
+/* Small filled dot that appears beside the currently selected option */
+.menu-sort-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  background: transparent;
+  transition: background 0.2s ease;
+}
+
+.menu-sort-option--active .menu-sort-dot {
+  background: #f59e0b;
 }
 
 /* Category Filters */
 .category-filters {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;        /* force single horizontal line */
+  flex-wrap: nowrap;          /* never wrap to next line */
+  align-items: flex-start;
+  gap: 10px;
+  overflow-x: auto;
+  overflow-y: visible;
+  scroll-behavior: smooth;
+  padding: 4px 2px 14px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+}
+.category-filters::-webkit-scrollbar { display: none; }
+/* wrapper must also not shrink or wrap */
+.category-pill {
+  flex-shrink: 0;
+  border: none;
+  background-color: transparent;
+}
+/* ── Rounded ring ────────────────────────────────────────────── */
+.category-pill__ring {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;         /* perfect circle */
+  border: 2.5px solid #e0e0e0;
+  overflow: hidden;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 2.5rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+.category-pill__label {
+  margin-top: 0.4rem;
+
+  /* Typography */
+  font-size: 0.9rem;
+  font-weight: 600;
+  font-family: 'Poppins', 'Inter', sans-serif;
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+
+  /* Color */
+  color: #1f2937;
+  text-align: center;
+
+  /* Layout control (🔥 key for 2-line text) */
+  max-width: 75px;
+  white-space: normal;
+  word-break: break-word;
+
+  /* Smooth UI */
+  transition: all 0.3s ease;
+
+  /* Subtle glow */
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+
+  /* Optional: clean 2-line clamp */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
+/* 🔥 Hover effect for premium feel */
+.category-pill:hover .category-pill__label {
+  color: #f59e0b;
+  transform: translateY(-2px);
+  text-shadow: 0 4px 10px rgba(245, 158, 11, 0.3);
+}
+.category-pill:hover .category-pill__label {
+  color: #f59e0b; /* golden highlight */
+  transform: translateY(-2px);
+  text-shadow: 0 4px 8px rgba(245, 158, 11, 0.3);
+}
+/* .category-pill__label {
+  background: linear-gradient(90deg, #1f2937, #4b5563);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
+.category-pill__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+/* .category-pill-wrapper{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+} */
 .category-btn {
   padding: 0.6rem 1.25rem;
   background: white;
@@ -232,31 +496,52 @@
 
 .dish-indicators {
   display: flex;
-  align-items: center;
+  align-items:center;
   gap: 0.5rem;
   flex-shrink: 0;
 }
 
 .veg-indicator {
+  /* position: absolute;    */
+  top: 10px;
+  right: 20px;
+  margin-top:2px;
+  margin-right: 12px;
+
   width: 14px;
   height: 14px;
-  border: 2px solid;
+  background: #fff;
+  border-radius: 3px;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }
 
-.veg-indicator::after {
-  content: '';
-  width: 6px;
-  height: 6px;
+.veg-dot {
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
 }
 
-.veg-indicator.veg { border-color: #16a34a; }
-.veg-indicator.veg::after { background: #16a34a; }
-.veg-indicator.non-veg { border-color: #dc2626; }
-.veg-indicator.non-veg::after { background: #dc2626; }
+/* Veg */
+.veg-indicator.veg {
+  border: 2px solid #16a34a;
+}
+.veg-indicator.veg .veg-dot {
+  background: #16a34a;
+}
+
+/* Non-Veg */
+.veg-indicator.non-veg {
+  border: 2px solid #dc2626;
+}
+.veg-indicator.non-veg .veg-dot {
+  background: #dc2626;
+}
+
 
 .spicy-indicator { color: #ef4444; }
 
