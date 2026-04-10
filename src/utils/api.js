@@ -1,8 +1,18 @@
 import axios from 'axios';
 
+// Base URL priority:
+//   1. REACT_APP_API_URL from .env / Vercel env vars (should include /api)
+//   2. Fallback to local dev backend
+// Make sure REACT_APP_API_URL ends with /api on all environments.
+// Example: https://daawat-e-ishq-user-backend.onrender.com/api
+const BASE_URL =
+  process.env.REACT_APP_API_URL ||
+  'http://localhost:5000/api';
+
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
-  withCredentials: true
+  baseURL: BASE_URL,
+  withCredentials: true,
+  timeout: 15000,
 });
 
 // Attach Authorization header if token exists in localStorage

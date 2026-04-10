@@ -638,7 +638,7 @@ const categories = [
   { key: 'pulao',           name: 'Pulao',           img: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=120&h=120&fit=crop' },
   { key: 'biriyani',        name: 'Biriyani',        img: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=120&h=120&fit=crop' },
   { key: 'indian-chicken',  name: 'Chicken Curry',   img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=120&h=120&fit=crop' },
-  { key: 'mutton',          name: 'Mutton',          img: 'https://i.pinimg.com/736x/e9/a5/92/e9a592bc11a55224937245014387e1d0.jpg' },
+  { key: 'Mutton',          name: 'Mutton',          img: 'https://i.pinimg.com/736x/e9/a5/92/e9a592bc11a55224937245014387e1d0.jpg' },
   { key: 'veg-curry',       name: 'Veg Curry',       img: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=120&h=120&fit=crop' },
   { key: 'kebab',           name: 'Kebab',           img: 'https://i.pinimg.com/1200x/24/f1/82/24f182fef5b691f3b3eb4c9499bb7eae.jpg' },
   { key: 'tandoori',        name: 'Tandoori',        img: 'https://www.cubesnjuliennes.com/wp-content/uploads/2022/12/Tandoori-Chicken-Recipe.jpg' },
@@ -651,6 +651,53 @@ const categories = [
   { key: 'tadka',           name: 'Tadka Special',   img: 'https://i.pinimg.com/1200x/df/99/a6/df99a6684cb8c69d9d764f5d5ec5b7c0.jpg' },
   { key: 'beverage',        name: 'Beverage',       img: 'https://images.unsplash.com/photo-1544145945-f90425340c7e?w=120&h=120&fit=crop' },
 ];
+
+const CATEGORY_KEYWORDS = {
+  mutton: ['mutton'],
+  'indian-chicken': ['chicken'],
+  'chinese-chicken': ['chicken'],
+  'chinese-fish': ['fish', 'ilish', 'hilsa'],
+  prawns: ['prawn', 'prawns', 'shrimp'],
+  kebab: ['kebab', 'kebabs'],
+  tandoori: ['tandoori'],
+  'veg-curry': ['paneer', 'dal', 'chana', 'veg', 'vegetable'],
+};
+
+const getItemSearchText = (item) =>
+  [
+    item.name,
+    item.description,
+    item.category,
+    ...(item.tags || []),
+  ]
+    .filter(Boolean)
+    .join(' ')
+    .toLowerCase();
+
+const matchesSelectedCategory = (item, selectedCategory) => {
+  const normalizedCategory = String(selectedCategory || '').toLowerCase();
+  const normalizedItemCategory = String(item.category || '').toLowerCase();
+
+  if (normalizedCategory === 'all') {
+    return true;
+  }
+
+  if (normalizedCategory === 'signature') {
+    return item.tags.includes('Signature Dish');
+  }
+
+  if (normalizedItemCategory === normalizedCategory) {
+    return true;
+  }
+
+  const keywords = CATEGORY_KEYWORDS[normalizedCategory];
+  if (!keywords || keywords.length === 0) {
+    return false;
+  }
+
+  const searchText = getItemSearchText(item);
+  return keywords.some((keyword) => searchText.includes(keyword));
+};
 
 /* -----------------------------------------------------------------------
    DIVIDERS
@@ -839,6 +886,38 @@ const MenuPage = () => {
     }
   }, [searchTerm, selectedCategory, sortBy]);
 
+  const visibleItems = useMemo(() => {
+    let items = [...menuItemsData];
+
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      items = items.filter((item) =>
+        item.name.toLowerCase().includes(term)
+      );
+    }
+
+    if (selectedCategory !== 'all') {
+      items = items.filter((item) =>
+        matchesSelectedCategory(item, selectedCategory)
+      );
+    }
+
+    switch (sortBy) {
+      case 'price-low':
+        return items.sort((a, b) => a.price - b.price);
+      case 'price-high':
+        return items.sort((a, b) => b.price - a.price);
+      case 'rating':
+        return items.sort((a, b) => b.rating - a.rating);
+      default:
+        return items.sort(
+          (a, b) =>
+            (b.tags.includes('Bestseller') || b.tags.includes('popular') || b.tags.includes('Signature Dish') ? 1 : 0) -
+            (a.tags.includes('Bestseller') || a.tags.includes('popular') || a.tags.includes('Signature Dish') ? 1 : 0)
+        );
+    }
+  }, [searchTerm, selectedCategory, sortBy]);
+
   /* ------------------------------------------------------------------
      RENDER
   ------------------------------------------------------------------ */
@@ -934,7 +1013,7 @@ const MenuPage = () => {
 
         {/* Menu card grid */}
         <div className="menu-grid">
-          {filteredItems.map((item) => (
+          {visibleItems.map((item) => (
             <MenuItemCard key={item.id} item={item} />
           ))}
         </div>

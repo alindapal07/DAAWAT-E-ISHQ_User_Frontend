@@ -79,7 +79,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (user && user.role === 'admin') {
       setLoading(true);
-      api.get('/reservations')
+      // Admin route: GET /api/admin/reservations
+      api.get('/admin/reservations')
         .then(res => {
           setReservations(res.data);
           setLoading(false);
@@ -94,7 +95,8 @@ const Dashboard = () => {
   useEffect(() => {
     if (user && user.role === 'admin') {
       setOrdersLoading(true);
-      api.get('/orders')
+      // Admin route: GET /api/admin/orders
+      api.get('/admin/orders')
         .then(res => {
           setOrders(res.data);
           setOrdersLoading(false);
